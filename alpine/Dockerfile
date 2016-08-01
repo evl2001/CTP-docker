@@ -1,6 +1,6 @@
 FROM anapsix/alpine-java:latest
 
-EXPOSE 1080 2104
+EXPOSE 1080 2104 7104
 
 ENV CTP_HOME /install/CTP
 
@@ -11,7 +11,7 @@ ENV CTP_LIBS ${CTP_HOME}/libraries/imageio
 
 ADD CTP/install.bz2 /
 ADD CTP/libclib_jiio.so ${JAVA_HOME}/jre/i386
-ADD CTP/Krishna.script ${CTP_HOME}/scripts
+#ADD CTP/Krishna.script ${CTP_HOME}/scripts
 
 RUN chmod -R 777 ${CTP_HOME}
 
