@@ -10,18 +10,18 @@ RUN apt-get update && apt-get install -y openssh-server xorg openbox
 
 RUN useradd -ms /bin/bash CTP -p CTP
 
-USER CTP
-ENV CTPHOME /home/CTP
+ENV CTP_USER_HOME /home/CTP
+ENV CTP_HOME ${CTP_USER_HOME}/install/CTP
 
-ADD CTP/install.bz2 ${CTPHOME}/install.bz2
-WORKDIR ${CTPHOME}
-RUN echo ${PWD}
-RUN ls ${CTPHOME}
+ADD CTP/install.bz2 ${CTP_USER_HOME}
+WORKDIR ${CTP_HOME}
 
 EXPOSE 1080
 EXPOSE 2104
 EXPOSE 22
 
-RUN tar xvf install.bz2
+RUN chown -R CTP:CTP ${CTP_USER_HOME}
 
-#RUN echo java -jar ${CTPHOME}/install/CTP/Runner.jar
+USER CTP
+
+RUN java -jar Runner.jar
