@@ -8,20 +8,24 @@ FROM idealctp/java_imageio:beta
 
 RUN apt-get update && apt-get install -y openssh-server xorg openbox
 
-RUN useradd -ms /bin/bash CTP -p CTP
+RUN service ssh start
+#RUN useradd -ms /bin/bash CTP -p CTP
 
-ENV CTP_USER_HOME /home/CTP
-ENV CTP_HOME ${CTP_USER_HOME}/install/CTP
+#ENV CTP_USER_HOME /home/CTP
+#ENV CTP_HOME ${CTP_USER_HOME}/install/CTP
+ENV CTP_HOME /install/CTP
 
-ADD CTP/install.bz2 ${CTP_USER_HOME}
+ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
+
+ADD CTP/install.bz2 /
+
+EXPOSE 1080 2104 22
+
+#RUN chown -R CTP:CTP ${CTP_USER_HOME}
+RUN chmod -R 777 ${CTP_HOME}
+
+#USER CTP
 WORKDIR ${CTP_HOME}
 
-EXPOSE 1080
-EXPOSE 2104
-EXPOSE 22
-
-RUN chown -R CTP:CTP ${CTP_USER_HOME}
-
-USER CTP
-
-RUN java -jar Runner.jar
+CMD ["java","-jar","Runner.jar"]
+#RUN java -jar Runner.jar
